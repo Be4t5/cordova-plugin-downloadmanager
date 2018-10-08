@@ -55,7 +55,7 @@ public class DownloadManager extends CordovaPlugin {
             request.setDescription(desc);
             //Set the local destination for the downloaded file to a path within the application's external files directory  
             if(path == "")
-                path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                path = Environment.DIRECTORY_DOWNLOADS;
             request.setDestinationInExternalFilesDir(cordova.getActivity().getApplicationContext(), path , filename);
             //Set visiblity after download is complete
             request.setNotificationVisibility(android.app.DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
