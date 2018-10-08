@@ -25,13 +25,14 @@ public class DownloadManager extends CordovaPlugin {
             String url = args.getString(0);
             String title = args.getString(1);
             String desc = args.getString(2);
-            this.startDownload(url, title, desc, callbackContext);
+            String path = args.getString(3);
+            this.startDownload(url, title, desc, path callbackContext);
             return true;
         }
         return false;
     }
 
-    private void startDownload(String message, String title, String desc, CallbackContext callbackContext) {
+    private void startDownload(String message, String title, String desc, String path, CallbackContext callbackContext) {
         if (message != null && message.length() > 0) {
             //String filename = message.substring(message.lastIndexOf("/")+1, message.length());
             String filename = title;
@@ -52,8 +53,10 @@ public class DownloadManager extends CordovaPlugin {
             request.setTitle(filename);
             //Set a description of this download, to be displayed in notifications (if enabled)
             request.setDescription(desc);
-            //Set the local destination for the downloaded file to a path within the application's external files directory            
-            request.setDestinationInExternalFilesDir(cordova.getActivity().getApplicationContext(), Environment.DIRECTORY_DOWNLOADS, filename);
+            //Set the local destination for the downloaded file to a path within the application's external files directory  
+            if(path == "")
+                path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            request.setDestinationInExternalFilesDir(cordova.getActivity().getApplicationContext(), path , filename);
             //Set visiblity after download is complete
             request.setNotificationVisibility(android.app.DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
             long downloadReference = downloadManager.enqueue(request);
